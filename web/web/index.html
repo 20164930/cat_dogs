@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/web/js/js1.js"></script>
+    <script type="text/javascript" src="/web/js/jquery-3.2.1.js"></script>
+</head>
+<body>
+    <input type="file" id="file" style="display:none;" name="file" onchange="filechange(event)">
+    <img src="" width="200px" height="200px" id="img-change">
+    <button id="btn">保存图片</button>
+    <span></span>
+    <script>
+        $("#img-change").click(function () {
+            $("#file").click();
+        })
+
+        $("#btn").click(function () {
+            var img=new FormData();
+            var t=document.getElementById("file").files[0];
+            img.append("img",t);
+            $.ajax({
+                url:"/imgurl/",
+                type: 'POST',
+                data: img,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var result=JSON.parse(data);
+                    $("span").text(result["result"]);
+                },
+                error: function (data) {
+                    console.log(data)
+                }
+            })
+    });
+    </script>
+</body>
+</html>
